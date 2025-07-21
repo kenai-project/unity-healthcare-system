@@ -1,0 +1,23 @@
+/* Fix for form labels and inputs text color on white background */
+.form-group label,
+.form-control {
+  color: #333 !important;
+  background-color: #fff !important;
+}
+
+/* Fix for select dropdown text color and background */
+select.form-control {
+  color: #333 !important;
+  background-color: #fff !important;
+}
+
+/* Fix for textarea background and text color */
+textarea.form-control {
+  color: #333 !important;
+  background-color: #fff !important;
+}
+
+/* Fix for placeholder text color */
+::placeholder {
+  color: #999 !important;
+}

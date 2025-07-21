@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unity Hospital - Healthcare Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-hospital" aria-hidden="true"></i>
+                    <span>Unity Hospital</span>
+                </div>
+                <nav class="nav desktop-nav" aria-label="primary navigation">
+                    <a href="#home" class="nav-link">HOME</a>
+                    <a href="#about" class="nav-link">ABOUT US</a>
+                    <a href="#doctors" class="nav-link">DOCTORS</a>
+                    <a href="#services" class="nav-link">SERVICES</a>
+                    <a href="#contact" class="nav-link">CONTACT US</a>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn btn--outline btn--sm" id="loginBtn">LOGIN</button>
+                    <button class="btn btn--primary btn--sm" id="registerBtn">REGISTRATION</button>
+                    <button class="btn btn--primary btn--sm" id="appointmentBtn">BOOK APPOINTMENT</button>
+                </div>
+                <div class="user-menu hidden" id="userMenu">
+                    <button class="btn btn--outline btn--sm" id="dashboardBtn">DASHBOARD</button>
+                    <button class="btn btn--secondary btn--sm" id="logoutBtn">LOGOUT</button>
+                </div>
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu hidden" id="mobileMenu">
+        <div class="mobile-menu-content">
+            <a href="#home" class="mobile-nav-link">HOME</a>
+            <a href="#about" class="mobile-nav-link">ABOUT US</a>
+            <a href="#doctors" class="mobile-nav-link">DOCTORS</a>
+            <a href="#services" class="mobile-nav-link">SERVICES</a>
+            <a href="#contact" class="mobile-nav-link">CONTACT US</a>
+            <div class="mobile-auth-buttons">
+                <button class="btn btn--outline btn--sm mobile-login-btn">LOGIN</button>
+                <button class="btn btn--primary btn--sm mobile-register-btn">REGISTRATION</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main id="mainContent">
+        <!-- Home Page -->
+        <section class="page active" id="homePage">
+            <!-- Hero Section -->
+            <section class="hero" id="home">
+                <div class="hero-bg"></div>
+                <div class="container">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Welcome to Unity Hospital</h1>
+                        <p class="hero-subtitle">Your Health, Our Priority - Providing exceptional healthcare services with advanced medical technology and compassionate care.</p>
+                        <div class="hero-buttons">
+                            <button class="btn btn--primary btn--lg" id="heroBookBtn">Book Appointment</button>
+                            <button class="btn btn--outline btn--lg" id="heroLearnBtn">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services Section -->
+            <section class="services" id="services">
+                <div class="container">
+                    <h2 class="section-title">Our Services</h2>
+                    <div class="services-grid">
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="fas fa-ambulance"></i>
+                            </div>
+                            <h3>24/7 Ambulance Support</h3>
+                            <p>Emergency medical services available round the clock for immediate care and transportation.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <h3>Eminent and Experienced Doctors</h3>
+                            <p>Our team of highly qualified medical professionals with years of specialized experience.</p>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon">
+                                <i class="fas fa-procedures"></i>
+                            </div>
+                            <h3>Multiple Treatment Options</h3>
+                            <p>Comprehensive treatment plans tailored to individual patient needs and medical conditions.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section class="about" id="about">
+                <div class="container">
+                    <h2 class="section-title">About Unity Hospital</h2>
+                    <div class="about-content">
+                        <div class="about-text">
+                            <p>Unity Hospital has been serving the community with excellence in healthcare for over two decades. We combine cutting-edge medical technology with compassionate care to provide the best possible treatment outcomes.</p>
+                            <p>Our mission is to deliver comprehensive healthcare services that meet the diverse needs of our patients while maintaining the highest standards of medical excellence and patient safety.</p>
+                        </div>
+                        <div class="about-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">24/7</div>
+                                <div class="stat-label">Emergency Care</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">50+</div>
+                                <div class="stat-label">Expert Doctors</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">10K+</div>
+                                <div class="stat-label">Happy Patients</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Doctors Section -->
+            <section class="doctors-section" id="doctors">
+                <div class="container">
+                    <h2 class="section-title">Our Medical Team</h2>
+                    <div class="doctors-grid" id="doctorsGrid">
+                        <!-- Doctors will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials Section -->
+            <section class="testimonials">
+                <div class="container">
+                    <h2 class="section-title">What Our Patients Say</h2>
+                    <div class="testimonials-grid" id="testimonialsGrid">
+                        <!-- Testimonials will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section class="contact" id="contact">
+                <div class="container">
+                    <h2 class="section-title">Contact Us</h2>
+                    <div class="contact-content">
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <div>
+                                    <h4>Email</h4>
+                                    <p>unityhospital@gmail.com</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <div>
+                                    <h4>Phone</h4>
+                                    <p>88666 00555</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <h4>Hours</h4>
+                                    <p>Mon-Sat: 24/7 Available<br>Sun: 4 AM to 11 PM</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <div>
+                                    <h4>Appointment Hours</h4>
+                                    <p>8 AM to 10 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="contact-form">
+                            <h3>Send us a Message</h3>
+                            <form id="contactForm">
+                                <div class="form-group">
+                                    <input type="text" id="contactName" class="form-control" placeholder="Your Name" required>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" id="contactEmail" class="form-control" placeholder="Your Email" required>
+                                </div>
+                                <div class="form-group">
+                                    <textarea id="contactMessage" class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn--primary btn--full-width">Send Message</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Login Page -->
+        <section class="page" id="loginPage">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <h2>Login to Your Account</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginEmail" class="form-label">Email Address</label>
+                            <input type="email" id="loginEmail" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            <input type="password" id="loginPassword" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="staySignedIn">
+                                <label for="staySignedIn">Stay signed in</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full-width">Login</button>
+                    </form>
+                    <div class="auth-links">
+                        <p>Don't have an account? <a href="#register" id="switchToRegister">Register here</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Register Page -->
+        <section class="page" id="registerPage">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <h2>Create Your Account</h2>
+                    <form id="registerForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="registerFirstName" class="form-label">First Name</label>
+                                <input type="text" id="registerFirstName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="registerLastName" class="form-label">Last Name</label>
+                                <input type="text" id="registerLastName" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerEmail" class="form-label">Email Address</label>
+                            <input type="email" id="registerEmail" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword" class="form-label">Password</label>
+                            <input type="password" id="registerPassword" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerConfirmPassword" class="form-label">Confirm Password</label>
+                            <input type="password" id="registerConfirmPassword" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerRole" class="form-label">Account Type</label>
+                            <select id="registerRole" class="form-control" required>
+                                <option value="">Select Role</option>
+                                <option value="patient">Patient</option>
+                                <option value="doctor">Doctor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" id="acceptTerms" required>
+                                <label for="acceptTerms">I agree to the Terms & Conditions</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full-width">Register</button>
+                    </form>
+                    <div class="auth-links">
+                        <p>Already have an account? <a href="#login" id="switchToLogin">Login here</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Appointment Page -->
+        <section class="page" id="appointmentPage">
+            <div class="appointment-container">
+                <div class="appointment-card">
+                    <h2>Book Your Appointment</h2>
+                    <form id="appointmentForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="appointmentName" class="form-label">Full Name</label>
+                                <input type="text" id="appointmentName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="appointmentEmail" class="form-label">Email Address</label>
+                                <input type="email" id="appointmentEmail" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="appointmentMobile" class="form-label">Mobile Number</label>
+                                <input type="tel" id="appointmentMobile" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="appointmentDepartment" class="form-label">Department</label>
+                                <select id="appointmentDepartment" class="form-control" required>
+                                    <option value="">Select Department</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="appointmentDate" class="form-label">Appointment Date</label>
+                                <input type="date" id="appointmentDate" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="appointmentTime" class="form-label">Appointment Time</label>
+                                <select id="appointmentTime" class="form-control" required>
+                                    <option value="">Select Time</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="appointmentPurpose" class="form-label">Purpose of Appointment</label>
+                            <textarea id="appointmentPurpose" class="form-control" rows="3" placeholder="Please describe your medical concern or reason for visit"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="appointmentNotes" class="form-label">Additional Notes</label>
+                            <textarea id="appointmentNotes" class="form-control" rows="2" placeholder="Any additional information or special requests"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full-width">Book Appointment</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Page -->
+        <section class="page" id="dashboardPage">
+            <div class="dashboard-container">
+                <div class="dashboard-header">
+                    <h2>Dashboard</h2>
+                    <div class="user-info">
+                        <span id="dashboardUserName">Welcome back!</span>
+                        <span id="dashboardUserRole" class="user-role">Patient</span>
+                    </div>
+                </div>
+                
+                <!-- Patient Dashboard -->
+                <div class="dashboard-content" id="patientDashboard">
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalAppointments">0</h3>
+                                <p>Total Appointments</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="upcomingAppointments">0</h3>
+                                <p>Upcoming</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="completedAppointments">0</h3>
+                                <p>Completed</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-sections">
+                        <div class="dashboard-section">
+                            <h3>Recent Appointments</h3>
+                            <div class="appointments-list" id="recentAppointments">
+                                <!-- Appointments will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="dashboard-section">
+                            <h3>Quick Actions</h3>
+                            <div class="quick-actions">
+                                <button class="btn btn--primary" id="quickBookBtn">Book New Appointment</button>
+                                <button class="btn btn--outline" id="viewAllAppointments">View All Appointments</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Doctor Dashboard -->
+                <div class="dashboard-content hidden" id="doctorDashboard">
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="todayAppointments">0</h3>
+                                <p>Today's Appointments</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalPatients">0</h3>
+                                <p>Total Patients</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="monthlyAppointments">0</h3>
+                                <p>This Month</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-sections">
+                        <div class="dashboard-section">
+                            <h3>Today's Schedule</h3>
+                            <div class="appointments-list" id="doctorSchedule">
+                                <!-- Schedule will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="dashboard-section">
+                            <h3>Patient Records</h3>
+                            <div class="patient-records" id="patientRecords">
+                                <!-- Patient records will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-hospital"></i>
+                        <span>Unity Hospital</span>
+                    </div>
+                    <p>Providing exceptional healthcare services with advanced medical technology and compassionate care.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#doctors">Doctors</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#">Emergency Care</a></li>
+                        <li><a href="#">Cardiology</a></li>
+                        <li><a href="#">Neurology</a></li>
+                        <li><a href="#">Pediatrics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Email: unityhospital@gmail.com</p>
+                    <p>Phone: 88666 00555</p>
+                    <p>24/7 Emergency Services</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Unity Hospital. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Spinner -->
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="notification-toast hidden" id="notificationToast">
+        <div class="notification-content">
+            <i class="notification-icon"></i>
+            <span class="notification-message"></span>
+        </div>
+        <button class="notification-close" id="notificationClose">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
