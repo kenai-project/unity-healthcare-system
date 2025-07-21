@@ -13,7 +13,8 @@ export default function Register() {
   const [errors, setErrors] = useState({});
 
   const validateEmail = (email) => {
-    const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+    // Updated regex to allow valid emails like test@gmail.com
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
   };
 
@@ -25,7 +26,7 @@ export default function Register() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
 
@@ -43,25 +44,29 @@ export default function Register() {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      const users = JSON.parse(localStorage.getItem('unityHospital_users')) || [];
-      if (users.find(u => u.email === formData.email)) {
-        setErrors({ email: 'User with this email already exists' });
-        return;
+      try {
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            email: formData.email,
+            password: formData.password,
+            role: formData.role
+          })
+        });
+
+        if (response.ok) {
+          alert('Registration successful! Please login with your credentials.');
+          window.location.href = '/login';
+        } else {
+          const data = await response.json();
+          setErrors({ form: data.message || 'Registration failed' });
+        }
+      } catch (error) {
+        setErrors({ form: 'Server error. Please try again later.' });
       }
-      const newUser = {
-        id: Date.now().toString(),
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        password: formData.password,
-        role: formData.role,
-        registrationDate: new Date().toISOString(),
-        appointments: []
-      };
-      users.push(newUser);
-      localStorage.setItem('unityHospital_users', JSON.stringify(users));
-      alert('Registration successful! Please login with your credentials.');
-      window.location.href = '/login';
     }
   };
 

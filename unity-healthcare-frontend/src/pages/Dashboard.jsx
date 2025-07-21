@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
-export default function Dashboard({ currentUser }) {
+export default function Dashboard() {
+  const { currentUser } = useContext(AuthContext);
+
   if (!currentUser) {
     return (
       <section className="page active" id="dashboardPage">

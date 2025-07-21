@@ -1,52 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Appointment from './pages/Appointment';
 import Dashboard from './pages/Dashboard';
+import DoctorAppointmentSchedule from './pages/DoctorAppointmentSchedule';
+import PatientLogs from './pages/PatientLogs';
+import Profile from './pages/Profile';
 import './style.css';
+import './custom-fixes.css';
+
+import { AuthProvider } from './context/AuthProvider';
+import { AuthContext } from './context/AuthContext';
+
+function PrivateRoute({ children }) {
+  const { currentUser } = React.useContext(AuthContext);
+  return currentUser ? children : <Navigate to="/login" replace />;
+}
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null);
-
-  // Load session from localStorage on mount
-  useEffect(() => {
-    const session = JSON.parse(localStorage.getItem('unityHospital_session'));
-    if (session && session.userId) {
-      const users = JSON.parse(localStorage.getItem('unityHospital_users')) || [];
-      const user = users.find(u => u.id === session.userId);
-      if (user) {
-        setCurrentUser(user);
-      }
-    }
-  }, []);
-
-  // Update localStorage session on currentUser change
-  useEffect(() => {
-    if (currentUser) {
-      localStorage.setItem('unityHospital_session', JSON.stringify({ userId: currentUser.id }));
-    } else {
-      localStorage.setItem('unityHospital_session', JSON.stringify(null));
-    }
-  }, [currentUser]);
-
-  const handleLogout = () => {
-    setCurrentUser(null);
-  };
-
   return (
-    <Router>
-      <Header currentUser={currentUser} onLogout={handleLogout} />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login onLogin={setCurrentUser} />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/appointment" element={<Appointment currentUser={currentUser} />} />
-        <Route path="/dashboard" element={<Dashboard currentUser={currentUser} />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/appointment"
+            element={
+              <PrivateRoute>
+                <Appointment />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/doctor/appointments" element={<DoctorAppointmentSchedule />} />
+          <Route path="/patient/logs" element={<PatientLogs />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

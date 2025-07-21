@@ -1,24 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { hospitalData } from '../data/hospital';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Appointment() {
+  const { currentUser, token } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    mobile: '',
-    department: '',
+    doctorId: '',
     date: '',
     time: '',
-    purpose: '',
+    reason: '',
     notes: ''
   });
 
   const [departments, setDepartments] = useState([]);
   const [timeSlots, setTimeSlots] = useState([]);
+  const [doctors, setDoctors] = useState([]);
 
   useEffect(() => {
     setDepartments(hospitalData.departments);
     setTimeSlots(hospitalData.timeSlots);
+    // Fetch doctors list from backend or use static data
+    // For now, filter hospitalData.doctors by department or show all
+    setDoctors(hospitalData.doctors || []);
   }, []);
 
   const handleChange = (e) => {
@@ -29,67 +35,61 @@ export default function Appointment() {
     }));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!currentUser) {
+      navigate('/login');
+      return;
+    }
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/appointments/book`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          doctorId: formData.doctorId,
+          date: formData.date,
+          time: formData.time,
+          reason: formData.reason,
+          notes: formData.notes
+        })
+      });
+      if (response.ok) {
+        alert('Appointment booked successfully!');
+        navigate('/patient/logs');
+      } else {
+        alert('Failed to book appointment.');
+      }
+    } catch (error) {
+      console.error('Error booking appointment:', error);
+      alert('Error booking appointment.');
+    }
+  };
+
   return (
     <main style={{ paddingTop: '80px' }}>
       <section className="appointment-container">
         <div className="appointment-card">
           <h2>Book Your Appointment</h2>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="form-row">
               <div className="form-group">
-                <label htmlFor="name">Full Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  className="form-control"
-                  placeholder="Full Name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="email">Email Address</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  className="form-control"
-                  placeholder="Email Address"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="mobile">Mobile Number</label>
-                <input
-                  type="tel"
-                  id="mobile"
-                  name="mobile"
-                  className="form-control"
-                  placeholder="Mobile Number"
-                  value={formData.mobile}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="department">Department</label>
+                <label htmlFor="doctorId">Select Doctor</label>
                 <select
-                  id="department"
-                  name="department"
+                  id="doctorId"
+                  name="doctorId"
                   className="form-control"
-                  value={formData.department}
+                  value={formData.doctorId}
                   onChange={handleChange}
                   required
                 >
-                  <option value="">Select Department</option>
-                  {departments.map((dept, idx) => (
-                    <option key={idx} value={dept}>{dept}</option>
+                  <option value="">Select Doctor</option>
+                  {doctors.map((doc) => (
+                    <option key={doc.id} value={doc.id}>
+                      Dr. {doc.firstName} {doc.lastName} - {doc.department}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -125,14 +125,14 @@ export default function Appointment() {
               </div>
             </div>
             <div className="form-group">
-              <label htmlFor="purpose">Purpose of Appointment</label>
+              <label htmlFor="reason">Purpose of Appointment</label>
               <textarea
-                id="purpose"
-                name="purpose"
+                id="reason"
+                name="reason"
                 className="form-control"
                 rows="3"
                 placeholder="Please describe your medical concern or reason for visit"
-                value={formData.purpose}
+                value={formData.reason}
                 onChange={handleChange}
               />
             </div>

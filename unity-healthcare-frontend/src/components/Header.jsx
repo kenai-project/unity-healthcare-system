@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
-export default function Header({ currentUser, onLogout }) {
+export default function Header() {
+  const { currentUser, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const handleScroll = (e, id) => {
     e.preventDefault();
     // If not on home page, navigate to home first
@@ -16,13 +21,20 @@ export default function Header({ currentUser, onLogout }) {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
   return (
     <header className="header" id="header">
       <div className="container">
         <div className="header-content">
           <div className="logo">
-            <i className="fas fa-hospital" aria-hidden="true"></i>
-            <span>Unity Hospital</span>
+            <Link to="/" className="logo-link">
+              <i className="fas fa-hospital" aria-hidden="true"></i>
+              <span>Unity Hospital</span>
+            </Link>
           </div>
           <nav className="nav desktop-nav" aria-label="primary navigation">
             <a href="#home" className="nav-link" onClick={(e) => handleScroll(e, 'home')}>HOME</a>
@@ -32,13 +44,26 @@ export default function Header({ currentUser, onLogout }) {
             <a href="#contact" className="nav-link" onClick={(e) => handleScroll(e, 'contact')}>CONTACT US</a>
           </nav>
           <div className="auth-buttons" style={{ display: currentUser ? 'none' : 'flex' }}>
-            <button className="btn btn--primary btn--sm" onClick={() => window.location.href = '/login'}>LOGIN</button>
-            <button className="btn btn--primary btn--sm" onClick={() => window.location.href = '/register'}>REGISTRATION</button>
-            <button className="btn btn--primary btn--sm" onClick={() => window.location.href = '/appointment'}>BOOK APPOINTMENT</button>
+            <button className="btn btn--primary btn--sm" onClick={() => navigate('/login')}>LOGIN</button>
+            <button className="btn btn--primary btn--sm" onClick={() => navigate('/register')}>REGISTRATION</button>
+            <button
+              className="btn btn--primary btn--sm"
+              onClick={() => {
+                if (currentUser) {
+                  navigate('/appointment');
+                } else {
+                  navigate('/login');
+                  // Optionally, show a toast notification here to inform user to login first
+                }
+              }}
+            >
+              BOOK APPOINTMENT
+            </button>
           </div>
           <div className="user-menu" style={{ display: currentUser ? 'flex' : 'none' }}>
-            <button className="btn btn--outline btn--sm" onClick={() => window.location.href = '/dashboard'}>DASHBOARD</button>
-            <button className="btn btn--secondary btn--sm" onClick={onLogout}>LOGOUT</button>
+            <button className="btn btn--primary btn--sm" onClick={() => navigate('/dashboard')}>DASHBOARD</button>
+            <button className="btn btn--primary btn--sm" onClick={() => navigate('/appointment')}>BOOK APPOINTMENT</button>
+            <button className="btn btn--danger btn--sm" onClick={handleLogout}>LOGOUT</button>
           </div>
           <button className="mobile-menu-toggle" id="mobileMenuToggle">
             <i className="fas fa-bars"></i>

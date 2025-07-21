@@ -1,23 +1,37 @@
-/* Fix for form labels and inputs text color on white background */
-.form-group label,
-.form-control {
-  color: #333 !important;
-  background-color: #fff !important;
-}
-
-/* Fix for select dropdown text color and background */
+/* Fix for form input text color on login and registration pages */
+input.form-control,
+textarea.form-control,
 select.form-control {
-  color: #333 !important;
+  color: black !important;
   background-color: #fff !important;
 }
 
-/* Fix for textarea background and text color */
-textarea.form-control {
-  color: #333 !important;
-  background-color: #fff !important;
+/* Fix placeholder text color */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: #555 !important;
 }
 
-/* Fix for placeholder text color */
-::placeholder {
-  color: #999 !important;
+/* Fix label color */
+.form-label {
+  color: black !important;
+}
+
+/* Fix checkbox label and related text visibility */
+.checkbox-wrapper label,
+.auth-links a,
+.auth-links p,
+.auth-links {
+  color: black !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  user-select: text !important;
+}
+
+/* Fix Appointment page label and container text visibility */
+.appointment-card label,
+.appointment-card {
+  color: black !important;
+  opacity: 1 !important;
 }
