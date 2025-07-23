@@ -9,14 +9,24 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!currentUser || currentUser.role !== 'patient') {
+    if (!currentUser) {
       setLoading(false);
       return;
     }
 
     const fetchAppointments = async () => {
       try {
-        const response = await api.get(`/appointments/patient/${currentUser.id}`);
+        let response;
+        if (currentUser.role === 'patient') {
+          response = await api.get(`/appointments/my`);
+        } else if (currentUser.role === 'doctor') {
+          response = await api.get(`/appointments/doctor`);
+        } else {
+          setAppointments({ current: [], history: [] });
+          setLoading(false);
+          return;
+        }
+
         if (response.status === 200) {
           const now = new Date();
           const currentApts = [];
@@ -97,6 +107,9 @@ export default function Dashboard() {
               </ul>
             )}
           </div>
+          <div>
+            <button onClick={() => window.location.href = '/book-appointment'}>Book New Appointment</button>
+          </div>
         </div>
       </section>
     );
@@ -111,8 +124,42 @@ export default function Dashboard() {
               <span id="dashboardUserRole" className="user-role">Doctor</span>
             </div>
           </div>
-          {/* Doctor dashboard content can be added here */}
-          <p>Doctor dashboard content coming soon.</p>
+          <div>
+            <h3>Upcoming Appointments</h3>
+            {loading ? (
+              <p>Loading appointments...</p>
+            ) : appointments.current.length === 0 ? (
+              <p>No upcoming appointments.</p>
+            ) : (
+              <ul>
+                {appointments.current.map(apt => (
+                  <li key={apt.id}>
+                    {apt.date} at {apt.time} with {apt.patient_first_name} {apt.patient_last_name} - {apt.reason}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div>
+            <h3>Past Appointments</h3>
+            {loading ? (
+              <p>Loading appointments...</p>
+            ) : appointments.history.length === 0 ? (
+              <p>No past appointments.</p>
+            ) : (
+              <ul>
+                {appointments.history.map(apt => (
+                  <li key={apt.id}>
+                    {apt.date} at {apt.time} with {apt.patient_first_name} {apt.patient_last_name} - {apt.reason}
+                    {apt.notes && <p>Notes: {apt.notes}</p>}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div>
+            <button onClick={() => window.location.href = '/patient/logs'}>View Patient Logs</button>
+          </div>
         </div>
       </section>
     );

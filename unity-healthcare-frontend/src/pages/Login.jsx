@@ -54,11 +54,7 @@ export default function Login() {
           const { token, user } = response.data;
           login(user, token);
           toast.success('Login successful!');
-          if (user.role === 'doctor') {
-            navigate('/doctor/appointments');
-          } else {
-            navigate('/patient/logs');
-          }
+          navigate('/dashboard');
         } else {
           toast.error('Login failed. Please check your credentials.');
         }

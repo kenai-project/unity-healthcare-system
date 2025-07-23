@@ -58,6 +58,8 @@ const response = await api.post('/auth/register', {
         if (response.status === 201 || response.status === 200) {
           alert('Registration successful! Please login with your credentials.');
           window.location.href = '/login';
+        } else if (response.status === 400) {
+          setErrors({ form: response.data.message || 'Email is already registered' });
         } else {
           setErrors({ form: response.data.message || 'Registration failed' });
         }

@@ -1,0 +1,15 @@
+{
+  "name": "unity-healthcare-system",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start:backend": "cd unity-healthcare-backend && npm install && npm run dev",
+    "start:frontend": "cd unity-healthcare-frontend && npm install && npm run dev",
+    "test:backend": "cd unity-healthcare-backend && npm test",
+    "test:frontend": "cd unity-healthcare-frontend && npm test",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
