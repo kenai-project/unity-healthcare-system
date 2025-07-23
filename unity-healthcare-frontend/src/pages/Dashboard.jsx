@@ -131,13 +131,28 @@ export default function Dashboard() {
             ) : appointments.current.length === 0 ? (
               <p>No upcoming appointments.</p>
             ) : (
-              <ul>
-                {appointments.current.map(apt => (
-                  <li key={apt.id}>
-                    {apt.date} at {apt.time} with {apt.patient_first_name} {apt.patient_last_name} - {apt.reason}
-                  </li>
-                ))}
-              </ul>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr>
+                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Date</th>
+                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Time</th>
+                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Patient Name</th>
+                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Reason</th>
+                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {appointments.current.map(apt => (
+                    <tr key={apt.id}>
+                      <td style={{ border: '1px solid #ddd', padding: '8px' }}>{new Date(apt.date).toLocaleDateString()}</td>
+                      <td style={{ border: '1px solid #ddd', padding: '8px' }}>{apt.time}</td>
+                      <td style={{ border: '1px solid #ddd', padding: '8px' }}>{apt.patient_first_name} {apt.patient_last_name}</td>
+                      <td style={{ border: '1px solid #ddd', padding: '8px' }}>{apt.reason}</td>
+                      <td style={{ border: '1px solid #ddd', padding: '8px' }}>{apt.notes || '-'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             )}
           </div>
           <div>
@@ -147,14 +162,28 @@ export default function Dashboard() {
             ) : appointments.history.length === 0 ? (
               <p>No past appointments.</p>
             ) : (
-              <ul>
-                {appointments.history.map(apt => (
-                  <li key={apt.id}>
-                    {apt.date} at {apt.time} with {apt.patient_first_name} {apt.patient_last_name} - {apt.reason}
-                    {apt.notes && <p>Notes: {apt.notes}</p>}
-                  </li>
-                ))}
-              </ul>
+          <table style={{ width: '100%', borderCollapse: 'collapse', color: 'black' }}>
+            <thead>
+              <tr style={{ backgroundColor: '#f2f2f2', color: 'black' }}>
+                <th style={{ border: '1px solid #ddd', padding: '8px', color: 'black' }}>Date</th>
+                <th style={{ border: '1px solid #ddd', padding: '8px', color: 'black' }}>Time</th>
+                <th style={{ border: '1px solid #ddd', padding: '8px', color: 'black' }}>Patient Name</th>
+                <th style={{ border: '1px solid #ddd', padding: '8px', color: 'black' }}>Reason</th>
+                <th style={{ border: '1px solid #ddd', padding: '8px', color: 'black' }}>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {appointments.history.map((apt, index) => (
+                <tr key={apt.id} style={{ backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9f9f9', color: 'black' }}>
+                  <td style={{ border: '1px solid #ddd', padding: '8px', color: 'black' }}>{new Date(apt.date).toLocaleDateString()}</td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px', color: 'black' }}>{apt.time}</td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px', color: 'black' }}>{apt.patient_first_name} {apt.patient_last_name}</td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px', color: 'black' }}>{apt.reason}</td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px', color: 'black' }}>{apt.notes || '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
             )}
           </div>
           <div>

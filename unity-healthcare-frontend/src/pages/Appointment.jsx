@@ -58,7 +58,7 @@ export default function Appointment() {
       return;
     }
     try {
-      const response = await api.post('/appointments', {
+      const response = await api.post('/appointments/book', {
         doctorId: formData.doctorId,
         date: formData.date,
         time: formData.time,
