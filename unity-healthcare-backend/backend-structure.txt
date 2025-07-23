@@ -1,0 +1,20 @@
+unity-healthcare-backend/
+│
+├── controllers/
+│   ├── appointment.controller.js      # Handles appointment logic (CRUD)
+│   └── auth.controller.js             # Handles authentication (login/register)
+|   └── user.controller.js              # (Likely) User-related logic (not yet defined)
+│
+├── middleware/
+│   └── authenticateToken.js           # Middleware to verify JWT tokens
+│
+├── routes/
+│   ├── appointment.js                 # Appointment routes
+│   ├── auth.js                        # Authentication routes
+│   └── user.js                        # (Likely) User-related routes (not yet defined in controllers)
+│
+├── .env                               # Environment variables (DB connection, JWT secret, etc.)
+├── db.js                              # Database connection (PostgreSQL via Pool)
+├── index.js                           # Entry point for backend Express app
+├── package.json / package-lock.json   # Project dependencies and metadata
+└── schema.sql                         # SQL schema to set up initial DB tables

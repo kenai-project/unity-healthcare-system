@@ -1,8 +1,10 @@
+
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import api from '../api';
 
 export default function Profile() {
-  const { user, token, setUser } = useContext(AuthContext);
+  const { currentUser, token, login } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -15,15 +17,15 @@ export default function Profile() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    if (user) {
+    if (currentUser) {
       setFormData(prev => ({
         ...prev,
-        firstName: user.first_name || '',
-        lastName: user.last_name || '',
-        email: user.email || '',
+        firstName: currentUser.firstName || '',
+        lastName: currentUser.lastName || '',
+        email: currentUser.email || '',
       }));
     }
-  }, [user]);
+  }, [currentUser]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,22 +53,14 @@ export default function Profile() {
     if (Object.keys(newErrors).length > 0) return;
 
     try {
-      const res = await fetch(`/api/user/${user.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-        }),
+      const res = await api.put(`/users/${currentUser.id}`, {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
       });
-      if (res.ok) {
+      if (res.status === 200) {
         setMessage('Profile updated successfully');
-        const updatedUser = await res.json();
-        setUser(prev => ({ ...prev, ...updatedUser }));
+        login({ ...currentUser, ...res.data }, token);
       } else {
         setMessage('Failed to update profile');
       }
@@ -89,18 +83,11 @@ export default function Profile() {
     if (Object.keys(newErrors).length > 0) return;
 
     try {
-      const res = await fetch(`/api/user/${user.id}/password`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          oldPassword: formData.oldPassword,
-          newPassword: formData.newPassword,
-        }),
+      const res = await api.put(`/users/${currentUser.id}/password`, {
+        oldPassword: formData.oldPassword,
+        newPassword: formData.newPassword,
       });
-      if (res.ok) {
+      if (res.status === 200) {
         setMessage('Password changed successfully');
         setFormData(prev => ({
           ...prev,
@@ -109,8 +96,7 @@ export default function Profile() {
           confirmPassword: '',
         }));
       } else {
-        const data = await res.json();
-        setMessage(data.message || 'Failed to change password');
+        setMessage('Failed to change password');
       }
     } catch (err) {
       console.error(err);
@@ -118,7 +104,7 @@ export default function Profile() {
     }
   };
 
-  if (!user) {
+  if (!currentUser) {
     return <p>Please login to view your profile.</p>;
   }
 

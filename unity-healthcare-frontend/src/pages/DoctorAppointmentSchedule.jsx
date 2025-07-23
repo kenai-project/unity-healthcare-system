@@ -1,31 +1,36 @@
+
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import api from '../api';
 
 export default function DoctorAppointmentSchedule() {
-  const { user, token } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user || user.role !== 'doctor') return;
+    if (!currentUser || currentUser.role !== 'doctor') return;
 
-    fetch(`/api/doctor/${user.id}/appointments`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
+    const fetchAppointments = async () => {
+      try {
+        const response = await api.get(`/appointments/doctor`);
+        if (response.status === 200) {
+          setAppointments(response.data);
+        } else {
+          setAppointments([]);
+        }
+      } catch (error) {
+        console.error('Error fetching appointments:', error);
+        setAppointments([]);
+      } finally {
+        setLoading(false);
       }
-    })
-      .then(res => res.json())
-      .then(data => {
-        setAppointments(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error('Error fetching appointments:', err);
-        setLoading(false);
-      });
-  }, [user, token]);
+    };
 
-  if (!user || user.role !== 'doctor') {
+    fetchAppointments();
+  }, [currentUser]);
+
+  if (!currentUser || currentUser.role !== 'doctor') {
     return <p>Access denied. This page is for doctors only.</p>;
   }
 

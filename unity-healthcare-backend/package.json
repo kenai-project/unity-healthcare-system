@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "setup-db": "node setup.js",
     "migrate": "psql -U postgres -d unitydb -f schema.sql"
   },
   "dependencies": {

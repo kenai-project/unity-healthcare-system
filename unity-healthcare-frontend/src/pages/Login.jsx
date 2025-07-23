@@ -1,8 +1,10 @@
+
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../api';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -43,25 +45,25 @@ export default function Login() {
     if (Object.keys(newErrors).length === 0) {
       setLoading(true);
       try {
-        // Replace with your actual login API call
-        // Simulate API call delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        // Simulate successful login user object
-        const user = {
+        const response = await api.post('/auth/login', {
           email: formData.email,
-          role: 'patient', // or 'doctor', adjust as needed
-        };
+          password: formData.password,
+        });
 
-        login(user);
-        toast.success('Login successful!');
-        if (user.role === 'doctor') {
-          navigate('/doctor/appointments');
+        if (response.status === 200) {
+          const { token, user } = response.data;
+          login(user, token);
+          toast.success('Login successful!');
+          if (user.role === 'doctor') {
+            navigate('/doctor/appointments');
+          } else {
+            navigate('/patient/logs');
+          }
         } else {
-          navigate('/patient/logs');
+          toast.error('Login failed. Please check your credentials.');
         }
       } catch (error) {
-        toast.error('Login failed. Please check your credentials.');
+        toast.error(error.response?.data?.message || 'Login failed. Please check your credentials.');
       } finally {
         setLoading(false);
       }

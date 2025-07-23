@@ -1,0 +1,49 @@
+unity-healthcare-frontend/
+│
+├── public/                             # Static assets
+│   └── vite.svg                        # Vite logo (default)
+│
+├── src/                                # Main source code
+│
+│   ├── assets/                         # Static media assets
+│   │   └── react.svg                   # Example asset
+│
+│   ├── components/                     # Reusable UI components
+│   │   ├── Doctors.jsx                 # Displays list/details of doctors
+│   │   ├── Header.jsx                 # Header/navbar component
+│   │   └── Testimonials.jsx           # Testimonials display
+│
+│   ├── context/                        # Global state (Auth, etc.)
+│   │   ├── AuthContext.jsx            # Context to hold auth state
+│   │   └── AuthProvider.jsx           # Provider to wrap app with auth logic
+│
+│   ├── data/                           # Static or mock data
+│   │   └── hospital.js                # Hospital information used in UI
+│
+│   ├── pages/                          # Page components (routed views)
+│   │   ├── Appointment.jsx            # Book appointment view
+│   │   ├── Dashboard.jsx              # User dashboard (doctor/patient)
+│   │   ├── DoctorAppointmentSchedule.jsx  # Doctor’s appointment calendar
+│   │   ├── Home.jsx                   # Landing/home page
+│   │   ├── Login.jsx                  # Login form/page
+│   │   ├── NotAuthorized.jsx         # Unauthorized access warning
+│   │   ├── PatientLogs.jsx           # Doctor view of patient logs
+│   │   ├── Profile.jsx               # User profile (name, email, etc.)
+│   │   └── Register.jsx              # Registration form/page
+│
+│   ├── App.jsx                        # Main app wrapper (router setup)
+│   ├── App.css                        # Styles for App.jsx
+│   ├── main.jsx                       # Entry point (renders App to DOM)
+│   ├── index.css                      # Global styles
+│   ├── style.css                      # Possibly general or reset styles
+│   └── custom-fixes.css              # Fixes or overrides for UI
+│
+├── .env                               # Environment variables (e.g., VITE_API_URL)
+├── .gitignore                         # Files to ignore in git
+├── index.html                         # Main HTML template
+├── eslint.config.js                   # Linting config (optional)
+├── api.js
+├── package.json                       # Project metadata and scripts
+├── package-lock.json                  # NPM lock file
+├── README.md                          # Project documentation
+└── vite.config.js                     # Vite-specific config

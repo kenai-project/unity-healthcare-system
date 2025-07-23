@@ -1,4 +1,6 @@
+
 import React, { useState } from 'react';
+import api from '../api';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -45,27 +47,22 @@ export default function Register() {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await fetch('http://localhost:5000/api/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            email: formData.email,
-            password: formData.password,
-            role: formData.role
-          })
+const response = await api.post('/auth/register', {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          password: formData.password,
+          role: formData.role
         });
 
-        if (response.ok) {
+        if (response.status === 201 || response.status === 200) {
           alert('Registration successful! Please login with your credentials.');
           window.location.href = '/login';
         } else {
-          const data = await response.json();
-          setErrors({ form: data.message || 'Registration failed' });
+          setErrors({ form: response.data.message || 'Registration failed' });
         }
       } catch (error) {
-        setErrors({ form: 'Server error. Please try again later.' });
+        setErrors({ form: error.response?.data?.message || 'Server error. Please try again later.' });
       }
     }
   };

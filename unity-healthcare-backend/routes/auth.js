@@ -6,7 +6,9 @@ const router = express.Router();
 
 // Register
 router.post('/register', async (req, res) => {
-  const { firstName, lastName, email, password, role } = req.body;
+  let { firstName, lastName, email, password, role } = req.body;
+  // Normalize role to lowercase
+  role = role.toLowerCase();
   try {
     const existing = await pool.query('SELECT * FROM users WHERE email=$1', [email]);
     if (existing.rows.length > 0) return res.status(400).json({ message: 'Email already registered' });

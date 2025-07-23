@@ -1,5 +1,9 @@
--- PostgreSQL schema for Unity Healthcare System
+-- Drop existing tables if needed (for development resets)
+DROP TABLE IF EXISTS password_reset_tokens;
+DROP TABLE IF EXISTS appointments;
+DROP TABLE IF EXISTS users;
 
+-- Users table
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   first_name VARCHAR(100) NOT NULL,
@@ -10,6 +14,7 @@ CREATE TABLE users (
   registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Appointments table
 CREATE TABLE appointments (
   id SERIAL PRIMARY KEY,
   patient_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
@@ -18,10 +23,11 @@ CREATE TABLE appointments (
   time TIME NOT NULL,
   reason TEXT,
   notes TEXT,
-  status VARCHAR(50) DEFAULT 'pending',
+  status VARCHAR(50) DEFAULT 'pending', -- can be: pending, confirmed, completed, cancelled
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Password reset tokens
 CREATE TABLE password_reset_tokens (
   id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,

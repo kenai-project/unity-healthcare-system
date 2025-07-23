@@ -1,10 +1,12 @@
+
 import React, { useState, useEffect, useContext } from 'react';
 import { hospitalData } from '../data/hospital';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import api from '../api.js';
 
 export default function Appointment() {
-  const { currentUser, token } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -22,9 +24,23 @@ export default function Appointment() {
   useEffect(() => {
     setDepartments(hospitalData.departments);
     setTimeSlots(hospitalData.timeSlots);
-    // Fetch doctors list from backend or use static data
-    // For now, filter hospitalData.doctors by department or show all
-    setDoctors(hospitalData.doctors || []);
+
+    // Fetch doctors list from backend
+    const fetchDoctors = async () => {
+      try {
+        const response = await api.get('/users/doctors');
+        if (response.status === 200) {
+          setDoctors(response.data);
+        } else {
+          setDoctors([]);
+        }
+      } catch (error) {
+        console.error('Error fetching doctors:', error);
+        setDoctors([]);
+      }
+    };
+
+    fetchDoctors();
   }, []);
 
   const handleChange = (e) => {
@@ -42,21 +58,14 @@ export default function Appointment() {
       return;
     }
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/appointments/book`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          doctorId: formData.doctorId,
-          date: formData.date,
-          time: formData.time,
-          reason: formData.reason,
-          notes: formData.notes
-        })
+      const response = await api.post('/appointments', {
+        doctorId: formData.doctorId,
+        date: formData.date,
+        time: formData.time,
+        reason: formData.reason,
+        notes: formData.notes
       });
-      if (response.ok) {
+      if (response.status === 201 || response.status === 200) {
         alert('Appointment booked successfully!');
         navigate('/patient/logs');
       } else {
