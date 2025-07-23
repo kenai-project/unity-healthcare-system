@@ -9,15 +9,25 @@ import Dashboard from './pages/Dashboard';
 import DoctorAppointmentSchedule from './pages/DoctorAppointmentSchedule';
 import PatientLogs from './pages/PatientLogs';
 import Profile from './pages/Profile';
+import NotAuthorized from './pages/NotAuthorized';
 import './style.css';
 import './custom-fixes.css';
 
 import { AuthProvider } from './context/AuthProvider';
 import { AuthContext } from './context/AuthContext';
 
-function PrivateRoute({ children }) {
+function PrivateRoute({ children, role }) {
   const { currentUser } = React.useContext(AuthContext);
-  return currentUser ? children : <Navigate to="/login" replace />;
+
+  if (!currentUser) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (role && currentUser.role !== role) {
+    return <Navigate to="/not-authorized" replace />;
+  }
+
+  return children;
 }
 
 function App() {
@@ -32,15 +42,44 @@ function App() {
           <Route
             path="/appointment"
             element={
-              <PrivateRoute>
+              <PrivateRoute role="patient">
                 <Appointment />
               </PrivateRoute>
             }
           />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/doctor/appointments" element={<DoctorAppointmentSchedule />} />
-          <Route path="/patient/logs" element={<PatientLogs />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/doctor/appointments"
+            element={
+              <PrivateRoute role="doctor">
+                <DoctorAppointmentSchedule />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/patient/logs"
+            element={
+              <PrivateRoute role="patient">
+                <PatientLogs />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <Profile />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/not-authorized" element={<NotAuthorized />} />
         </Routes>
       </Router>
     </AuthProvider>
