@@ -80,31 +80,57 @@ export default function Dashboard() {
             {loading ? (
               <p>Loading appointments...</p>
             ) : appointments.current.length === 0 ? (
-              <p>No current appointments.</p>
+          <p style={{ color: 'black' }}>No current appointments.</p>
             ) : (
-              <ul>
-                {appointments.current.map(apt => (
-                  <li key={apt.id}>
-                    {apt.date} at {apt.time} with Dr. {apt.doctor_first_name} {apt.doctor_last_name} - {apt.reason}
-                  </li>
-                ))}
-              </ul>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr style={{ backgroundColor: '#f2f2f2' }}>
+                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Date</th>
+                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Time</th>
+                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Doctor Name</th>
+                    <th style={{ border: '1px solid #ddd', padding: '8px' }}>Reason</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {appointments.current.map((apt, index) => (
+                    <tr key={apt.id} style={{ backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9f9f9' }}>
+                      <td style={{ border: '1px solid #ddd', padding: '8px' }}>{new Date(apt.date).toLocaleDateString()}</td>
+                      <td style={{ border: '1px solid #ddd', padding: '8px' }}>{apt.time}</td>
+                      <td style={{ border: '1px solid #ddd', padding: '8px' }}>{apt.doctor_first_name} {apt.doctor_last_name}</td>
+                      <td style={{ border: '1px solid #ddd', padding: '8px' }}>{apt.reason}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             )}
           </div>
           <div>
-            <h3>Appointment History</h3>
+          <h3 style={{ color: 'black' }}>Appointment History</h3>
             {loading ? (
               <p>Loading appointments...</p>
             ) : appointments.history.length === 0 ? (
-              <p>No past appointments.</p>
+              <p style={{ color: 'black' }}>No past appointments.</p>
             ) : (
-              <ul>
-                {appointments.history.map(apt => (
-                  <li key={apt.id}>
-                    {apt.date} at {apt.time} with Dr. {apt.doctor_first_name} {apt.doctor_last_name} - {apt.reason}
-                  </li>
-                ))}
-              </ul>
+              <table style={{ width: '100%', borderCollapse: 'collapse', color: 'black', borderColor: '#333' }}>
+            <thead>
+              <tr style={{ backgroundColor: '#f2f2f2', color: 'black', borderColor: '#333' }}>
+                <th style={{ border: '1px solid #333', padding: '8px', color: 'black' }}>Date</th>
+                <th style={{ border: '1px solid #333', padding: '8px', color: 'black' }}>Time</th>
+                <th style={{ border: '1px solid #333', padding: '8px', color: 'black' }}>Doctor Name</th>
+                <th style={{ border: '1px solid #333', padding: '8px', color: 'black' }}>Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              {appointments.history.map((apt, index) => (
+                <tr key={apt.id} style={{ backgroundColor: index % 2 === 0 ? '#ffffff' : '#f9f9f9', color: 'black', borderColor: '#333' }}>
+                  <td style={{ border: '1px solid #333', padding: '8px', color: 'black' }}>{new Date(apt.date).toLocaleDateString()}</td>
+                  <td style={{ border: '1px solid #333', padding: '8px', color: 'black' }}>{apt.time}</td>
+                  <td style={{ border: '1px solid #333', padding: '8px', color: 'black' }}>{apt.doctor_first_name} {apt.doctor_last_name}</td>
+                  <td style={{ border: '1px solid #333', padding: '8px', color: 'black' }}>{apt.reason}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
             )}
           </div>
           <div>
@@ -129,7 +155,7 @@ export default function Dashboard() {
             {loading ? (
               <p>Loading appointments...</p>
             ) : appointments.current.length === 0 ? (
-              <p>No upcoming appointments.</p>
+          <p style={{ color: 'black' }}>No upcoming appointments.</p>
             ) : (
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
@@ -160,7 +186,7 @@ export default function Dashboard() {
             {loading ? (
               <p>Loading appointments...</p>
             ) : appointments.history.length === 0 ? (
-              <p>No past appointments.</p>
+          <p style={{ color: 'black' }}>No past appointments.</p>
             ) : (
           <table style={{ width: '100%', borderCollapse: 'collapse', color: 'black' }}>
             <thead>
@@ -187,7 +213,7 @@ export default function Dashboard() {
             )}
           </div>
           <div>
-            <button onClick={() => window.location.href = '/patient/logs'}>View Patient Logs</button>
+          <button style={{ color: 'black' }} onClick={() => window.location.href = '/patient/logs'}>View Patient Logs</button>
           </div>
         </div>
       </section>
