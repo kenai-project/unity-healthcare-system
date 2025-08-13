@@ -51,8 +51,9 @@ export default function Login() {
         });
 
         if (response.status === 200) {
-          const { token, user } = response.data;
+          const { token, refreshToken, user } = response.data;
           login(user, token);
+          localStorage.setItem('refreshToken', refreshToken);
           toast.success('Login successful!');
           navigate('/dashboard');
         } else {
