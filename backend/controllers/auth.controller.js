@@ -54,20 +54,11 @@ exports.loginUser = async (req, res) => {
     const token = jwt.sign(
       { id: user.id, role: user.role },
       process.env.JWT_SECRET || 'default_secret',
-      { expiresIn: '15m' } // Short-lived access token
+      { expiresIn: '1d' }
     );
-
-    const refreshToken = jwt.sign(
-      { id: user.id, role: user.role },
-      process.env.JWT_REFRESH_SECRET || 'default_refresh_secret',
-      { expiresIn: '7d' } // Longer-lived refresh token
-    );
-
-    // Store refresh token in database or in-memory store (for demo, skipping storage)
 
     res.json({
       token,
-      refreshToken,
       user: {
         id: user.id,
         firstName: user.first_name,
@@ -80,24 +71,6 @@ exports.loginUser = async (req, res) => {
     console.error('Login Error:', err.message);
     res.status(500).json({ message: 'Server error' });
   }
-};
-
-// New endpoint to refresh access token
-exports.refreshToken = (req, res) => {
-  const { refreshToken } = req.body;
-  if (!refreshToken) return res.status(401).json({ message: 'Refresh token missing' });
-
-  jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET || 'default_refresh_secret', (err, user) => {
-    if (err) return res.status(403).json({ message: 'Invalid refresh token' });
-
-    const newToken = jwt.sign(
-      { id: user.id, role: user.role },
-      process.env.JWT_SECRET || 'default_secret',
-      { expiresIn: '15m' }
-    );
-
-    res.json({ token: newToken });
-  });
 };
 
 // ✅ Forgot password (email reset link)
